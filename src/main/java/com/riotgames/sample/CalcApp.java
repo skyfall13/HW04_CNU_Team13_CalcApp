@@ -24,15 +24,6 @@ public class CalcApp {
 
 		this.token2Postfix(tokens);
 
-		// firstOperand = Double.parseDouble(tokens[0]);
-		// if (tokens.length > 2) {
-		// secondOperand = Double.parseDouble(tokens[2]);
-		// } else {
-		// secondOperand = Double.parseDouble(tokens[1]);
-		// }
-		// final Operator operator = Operator.findOperator(tokens[1]);
-
-		// return operator.evaluate(firstOperand, secondOperand);
 		return this.evalPostfix();
 	}
 
@@ -117,31 +108,22 @@ public class CalcApp {
 
 	private int inComingPrecedence(String givenToken) {
 		char tempChar = givenToken.charAt(0);
-		
-		switch(tempChar){
-			case'+':
-			case'-':
-				return 12;
-			case'*':
-			case'/':
-				return 13;
-			case'(':
-				return 20;
-			case')':
-				return 19;
-			default:
-				return -1;
+
+		switch (tempChar) {
+		case '+':
+		case '-':
+			return 12;
+		case '*':
+		case '/':
+			return 13;
+		case '(':
+			return 20;
+		case ')':
+			return 19;
+		default:
+			return -1;
 		}
-//		if (givenToken.charAt(0) == '+' || givenToken.charAt(0) == '-')
-//			return 12;
-//		else if (givenToken.charAt(0) == '*' || givenToken.charAt(0) == '/')
-//			return 13;
-//		else if (givenToken.charAt(0) == '(')
-//			return 20;
-//		else if (givenToken.charAt(0) == ')')
-//			return 19;
-//		else
-//			return 0;
+
 	}
 
 	private int inStackPrecedence(String givenToken) {
@@ -162,16 +144,7 @@ public class CalcApp {
 		default:
 			return -1;
 		}
-		// if (givenToken.charAt(0) == '+' || givenToken.charAt(0) == '-')
-		// return 12;
-		// else if (givenToken.charAt(0) == '*' || givenToken.charAt(0) == '/')
-		// return 13;
-		// else if (givenToken.charAt(0) == '(')
-		// return 0;
-		// else if (givenToken.charAt(0) == ')')
-		// return 19;
-		// else
-		// return 0;
+
 	}
 
 }
