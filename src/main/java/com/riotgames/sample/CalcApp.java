@@ -7,47 +7,46 @@ import java.util.Stack;
  * Calculator application
  */
 public class CalcApp {
-	
+
 	private String[] postfix;
 	private Stack<String> oStack;
 	private Stack<Double> vStack;
-	
-    public static void main( String[] args ) {
-        final CalcApp app = new CalcApp();
-        final StringBuilder outputs = new StringBuilder();
-        Arrays.asList(args).forEach(value -> outputs.append(value + " "));
-        System.out.print( "Addition of values: " + outputs + " = ");
-        System.out.println(app.calc(args));
-    }
-    
-    public double calc(String[] tokens) {
-        
-        this.token2Postfix(tokens);
-        
-//        firstOperand = Double.parseDouble(tokens[0]);
-//        if (tokens.length > 2) {
-//            secondOperand = Double.parseDouble(tokens[2]);
-//        } else {
-//            secondOperand = Double.parseDouble(tokens[1]);
-//        }
-//        final Operator operator = Operator.findOperator(tokens[1]);
 
-//        return operator.evaluate(firstOperand, secondOperand);
-        return this.evalPostfix();
-    }
-    
-    public double evalPostfix() {
+	public static void main(String[] args) {
+		final CalcApp app = new CalcApp();
+		final StringBuilder outputs = new StringBuilder();
+		Arrays.asList(args).forEach(value -> outputs.append(value + " "));
+		System.out.print("Addition of values: " + outputs + " = ");
+		System.out.println(app.calc(args));
+	}
+
+	public double calc(String[] tokens) {
+
+		this.token2Postfix(tokens);
+
+		// firstOperand = Double.parseDouble(tokens[0]);
+		// if (tokens.length > 2) {
+		// secondOperand = Double.parseDouble(tokens[2]);
+		// } else {
+		// secondOperand = Double.parseDouble(tokens[1]);
+		// }
+		// final Operator operator = Operator.findOperator(tokens[1]);
+
+		// return operator.evaluate(firstOperand, secondOperand);
+		return this.evalPostfix();
+	}
+
+	public double evalPostfix() {
 		int p = 0;
 		String curToken;
 		Double popToken1, popToken2, result;
 		this.vStack = new Stack<Double>();
-		
-		while(p < this.postfix.length && this.postfix[p] != null) {
+
+		while (p < this.postfix.length && this.postfix[p] != null) {
 			curToken = this.postfix[p++];
-			if(this.isDigit(curToken)){
-				this.vStack.push(Double.parseDouble(String.valueOf(curToken))); 
-			}
-			else{
+			if (this.isDigit(curToken)) {
+				this.vStack.push(Double.parseDouble(String.valueOf(curToken)));
+			} else {
 				popToken1 = this.vStack.pop();
 				popToken2 = this.vStack.pop();
 				Operator operator = Operator.findOperator(curToken);
@@ -57,19 +56,19 @@ public class CalcApp {
 		result = this.vStack.pop();
 		return result;
 	}
-    
-    public boolean isDigit(String token){
-    	if(token.charAt(0) >= '0' && token.charAt(0) <= '9')
-    		return true;
-    	else
-    		return false;
-    }
+
+	public boolean isDigit(String token) {
+		if (token.charAt(0) >= '0' && token.charAt(0) <= '9')
+			return true;
+		else
+			return false;
+	}
 
 	public boolean token2Postfix(String[] args) {
 		int i = 0;
 		int p = 0;
 		String[] tokens = args;
-		
+
 		String curToken, poppedToken, topToken;
 		this.oStack = new Stack<String>();
 		this.postfix = new String[tokens.length];
@@ -109,7 +108,7 @@ public class CalcApp {
 				}
 			}
 		}
-		while(!this.oStack.isEmpty()){
+		while (!this.oStack.isEmpty()) {
 			poppedToken = (String) this.oStack.pop();
 			this.postfix[p++] = poppedToken;
 		}
@@ -117,30 +116,62 @@ public class CalcApp {
 	}
 
 	private int inComingPrecedence(String givenToken) {
-		if (givenToken.charAt(0) == '+' || givenToken.charAt(0) == '-')
-			return 12;
-		else if (givenToken.charAt(0) == '*' || givenToken.charAt(0) == '/')
-			return 13;
-		else if (givenToken.charAt(0) == '(')
-			return 20;
-		else if (givenToken.charAt(0) == ')')
-			return 19;
-		else
-			return 0;
+		char tempChar = givenToken.charAt(0);
+		
+		switch(tempChar){
+			case'+':
+			case'-':
+				return 12;
+			case'*':
+			case'/':
+				return 13;
+			case'(':
+				return 20;
+			case')':
+				return 19;
+			default:
+				return -1;
+		}
+//		if (givenToken.charAt(0) == '+' || givenToken.charAt(0) == '-')
+//			return 12;
+//		else if (givenToken.charAt(0) == '*' || givenToken.charAt(0) == '/')
+//			return 13;
+//		else if (givenToken.charAt(0) == '(')
+//			return 20;
+//		else if (givenToken.charAt(0) == ')')
+//			return 19;
+//		else
+//			return 0;
 	}
 
 	private int inStackPrecedence(String givenToken) {
-		if (givenToken.charAt(0) == '+' || givenToken.charAt(0) == '-')
+
+		char tempChar = givenToken.charAt(0);
+
+		switch (tempChar) {
+		case '+':
+		case '-':
 			return 12;
-		else if (givenToken.charAt(0) == '*' || givenToken.charAt(0) == '/')
+		case '*':
+		case '/':
 			return 13;
-		else if (givenToken.charAt(0) == '(')
+		case '(':
 			return 0;
-		else if (givenToken.charAt(0) == ')')
+		case ')':
 			return 19;
-		else
-			return 0;
+		default:
+			return -1;
+		}
+		// if (givenToken.charAt(0) == '+' || givenToken.charAt(0) == '-')
+		// return 12;
+		// else if (givenToken.charAt(0) == '*' || givenToken.charAt(0) == '/')
+		// return 13;
+		// else if (givenToken.charAt(0) == '(')
+		// return 0;
+		// else if (givenToken.charAt(0) == ')')
+		// return 19;
+		// else
+		// return 0;
 	}
 
 }
-
